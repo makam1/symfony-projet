@@ -4,6 +4,10 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Employe;
+use App\Repository\EmployeRepository;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class ServiceController extends AbstractController
 {
@@ -24,24 +28,31 @@ class ServiceController extends AbstractController
         return $this->render('service/accueil.html.twig');
     }
     /**
-     * @Route("/ajouter", name="ajouter")
+     * @Route("/service/ajouter", name="ajouter")
      */
-    public function ajouter()
+    public function ajouter(Request $requete)
     {
         return $this->render('service/ajouter.html.twig');
     }
     /**
-     * @Route("/supprimer", name="ajouter")
+     * @Route("/service/supprimer", name="ajouter")
      */
     public function supprimer()
     {
         return $this->render('service/supprimer.html.twig');
     }
+
+
     /**
-     * @Route("/modifier", name="ajouter")
+     * @Route("/service/modifier", name="ajouter")
      */
-    public function modifier()
+    public function modifier(EmployeRepository $repo)
+
     {
-        return $this->render('service/modifier.html.twig');
+        $employes= $repo->findAll();
+        return $this->render('service/modifier.html.twig',[
+            'controller_name'=>'ServiceController',
+            'employes'=>$employes
+        ]);
     }
 }
