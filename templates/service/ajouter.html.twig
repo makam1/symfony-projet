@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+        {% block body %}
+
+        <h1> Ajouter un(e) employé(e)</h1>
+
+
+        {{ form_start(formemploye) }}
+
+        {{ form_row(formemploye.nom,{ 'attr': {'placeholder' : "Entrer le nom"}} )}}
+
+        {{ form_row(formemploye.prenom,{ 'attr': {'placeholder' : "Entrer le prénom"}} )}}
+
+        {{ form_row(formemploye.adresse,{ 'attr': {'placeholder' : "Entrer l'adresse"}} )}}
+        {{ form_row(formemploye.telephone,{ 'attr': {'placeholder' : "Entrer le telephone"}} )}}
+
+        {{ form_row(formemploye.email,{ 'attr': {'placeholder' : "Entrer lemail"}} )}}
+
+        {{ form_row(formemploye.poste,{ 'attr': {'placeholder' : "Entrer leposte"}} )}}
+        {{ form_row(formemploye.salaire,{ 'attr': {'placeholder' : "Entrer lesalaire"}} )}}
+        {{ form_row(formemploye.services,{ 'attr': {'placeholder' : "Entrer leservices"}} )}}
+
+
+         <button type="submit" > Ajouter</button>
+
+           {{ form_end(formemploye) }}
+
+        
+        {% endblock %}
