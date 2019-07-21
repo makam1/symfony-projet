@@ -7,7 +7,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\Employe;
 use App\Repository\EmployeRepository;
 use Symfony\Component\HttpFoundation\Request;
-
+use Doctrine\Common\Persistence\ObjectManager;
+use App\Form\EmployeType;
 
 class ServiceController extends AbstractController
 {
@@ -25,17 +26,39 @@ class ServiceController extends AbstractController
      */
     public function accueil()
     {
-        return $this->render('service/accueil.html.twig');
+        return $this->render('service/home.html.twig');
     }
     /**
      * @Route("/service/ajouter", name="ajouter")
+     * @Route("/service/{id}/modif", name="modif")
      */
-    public function ajouter(Request $requete)
+    public function ajouter(Employe $employe= Null,Request $requete, ObjectManager $manager)
     {
-        return $this->render('service/ajouter.html.twig');
+
+        if(!$employe){
+
+            $employe = new Employe();
+        }   
+
+        $form= $this->createForm(EmployeType::class,$employe);
+
+        $form->handleRequest($requete);
+
+        if($form->isSubmitted() && $form->isValid()){
+
+            $manager->persist($employe);
+            $manager->flush();
+
+        return $this->redirectToRoute('modifier');
+
+        }
+
+        return $this->render('service/ajouter.html.twig',[
+            'formemploye'=>$form->createView()
+        ]);
     }
     /**
-     * @Route("/service/supprimer", name="ajouter")
+     * @Route("/service/supprimer", name="supprimer")
      */
     public function supprimer()
     {
@@ -44,10 +67,9 @@ class ServiceController extends AbstractController
 
 
     /**
-     * @Route("/service/modifier", name="ajouter")
+     * @Route("/service/modifier", name="modifier")
      */
     public function modifier(EmployeRepository $repo)
-
     {
         $employes= $repo->findAll();
         return $this->render('service/modifier.html.twig',[
